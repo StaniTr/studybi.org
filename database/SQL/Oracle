@@ -138,27 +138,3 @@ CREATE TABLE "Errors"(
   PRIMARY KEY(Error_ID)
 );
 
-
-
-
---creating role [studybi]
-Create role studybi;
---creating [user1]
-Create user boss
-identified by bi;
---grant role [studybi] to user [user1]
-Grant studybi to boss;
-
---grant privileges to [studybi] role
-Grant create session, create table,create sequence, create view, create procedure
-to studybi;
-
---"all" specifies all object privileges
-Grant ALTER, DELETE, INSERT, SELECT,UPDATE
---privileges on all tables from studybi "db"
---grant cols one by one instead of using [columns]
-on  Students2--, Tasks, Selfwork, Teamwork, TW_Participants, TW_Teams, TW_Points, Bonuses, "Errors"
---grant object privileges to role [studybi]
-to studybi;
-
---grant option is for users not for roles
