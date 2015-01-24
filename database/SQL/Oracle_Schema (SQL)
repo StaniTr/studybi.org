@@ -25,7 +25,7 @@ CREATE TABLE Tasks(
   Deadline1 DATE,
   --2nd deadline is with penalty 
   Deadline2 DATE,
-  -- 0 is selfwork, 1 is TW
+  -- 'N' is selfwork, 'Y' is TW
   --no boolean in Oracle
   --isTW (isTeamwork)
   isTW CHAR(1) DEFAULT 'N' NOT NULL,
