@@ -26,7 +26,9 @@ CREATE TABLE Tasks(
   --2nd deadline is with penalty 
   Deadline2 DATE,
   -- 0 is selfwork, 1 is TW
-  isTeamwork BOOLEAN DEFAULT 0 NOT NULL,
+  --no boolean in Oracle
+  --isTW (isTeamwork)
+  isTW CHAR(1) DEFAULT 'N' NOT NULL,
   
   PRIMARY KEY(Task_ID)
 );
@@ -41,14 +43,15 @@ CREATE TABLE Selfwork(
   Bonuses VARCHAR2(20) DEFAULT NULL,
   "Errors" VARCHAR2(200) DEFAULT NULL,
   --isFixed, Notes and Mark (only some self work's task have marks: def- null
-  isFixed BOOLEAN DEFAULT 0 NOT NULL,
+  isFixed CHAR(1) DEFAULT 'N' NOT NULL,
   Mark NUMBER(1) DEFAULT NULL,
   Notes VARCHAR2(200) DEFAULT NULL,
+  
   --The combination of Task_Id and FN must be unique
   FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID),
   FOREIGN KEY(FN) REFERENCES Students(FN),
   --PK - combined
-  PRIMARY KEY(Task_ID, FN) as SW_pk
+  PRIMARY KEY(Task.Task_ID, Students.FN) 
 );
 
 
@@ -64,9 +67,10 @@ CREATE TABLE Teamwork(
   --Bonuses and Errors are comma-delimited fields, default - null
   Bonuses VARCHAR2(20) DEFAULT NULL,
   "Errors" VARCHAR2(200) DEFAULT NULL,
+  
   FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID),
   --PK - combined
-  PRIMARY KEY(Task_ID, Team_ID) as Team_pk
+  PRIMARY KEY(Task_ID, Team_ID) 
 );
 
 
@@ -76,10 +80,11 @@ CREATE TABLE TW_Participants(
   Task_ID NUMBER(3),
   --no dublicates in FN for a current Task_ID
   FN NUMBER(12),
+  
   FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID),
   FOREIGN KEY(FN) REFERENCES Students(FN),
   --PK - combined
-  PRIMARY KEY(Task_ID, FN) as TW_Part_pk
+  PRIMARY KEY(Task_ID, FN) 
 );
 
 
@@ -89,9 +94,10 @@ CREATE TABLE TW_Teams(
   Task_ID NUMBER(3),
   Team_ID NUMBER(3),
   FN NUMBER(12),
+  
   FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID),
   --PK - combined
-  PRIMARY KEY(Task_ID, Team_ID, FN) as TW_members_pk
+  PRIMARY KEY(Task_ID, Team_ID, FN)
 );
 
 
@@ -105,9 +111,10 @@ CREATE TABLE TW_Points(
   Category3 VARCHAR2(20) DEFAULT 0 NOT NULL,
   Category4 VARCHAR2(20) DEFAULT 0 NOT NULL,
   Category5 VARCHAR2(20) DEFAULT 0 NOT NULL,
+  
   FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID),
   --PK-combined
-  PRIMARY KEY(Task_ID, Team_ID) as TW_Points_pk
+  PRIMARY KEY(Task_ID, Team_ID) 
 );
 
 
@@ -129,3 +136,22 @@ CREATE TABLE "Errors"(
   
   PRIMARY KEY(Error_ID)
 );
+--creating role [studybi]
+Create role studybi;
+--creating [user1]
+Create user user1;
+--grant role [studybi] to user [user1]
+Grant studybi to user1;
+identified by bi;
+--grant privileges to [studybi] role
+Grant privilege (create session, create table,create sequence, create view, create procedure)
+to sudybi;
+
+--"all" specifies all object privileges
+Grant ALTER, DELETE, INDEX, INSERT, SELECT,UPDATE, REFERENCES
+--privileges on all tables from studybi "db"
+on Students, Tasks, Selfwork, Teamwork, TW_Participants, TW_Members, TW_Points, Bonuses, "Errors"
+--grant object privileges to role [studybi]
+to studybi
+--studybo can grant other users
+with grant option;
