@@ -46,7 +46,9 @@ CREATE TABLE Selfwork(
   Notes VARCHAR2(200) DEFAULT NULL,
   --The combination of Task_Id and FN must be unique
   FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID),
-  FOREIGN KEY(FN) REFERENCES Students(FN)
+  FOREIGN KEY(FN) REFERENCES Students(FN),
+  --PK - combined
+  PRIMARY KEY(Task_ID, FN) as SW_pk
 );
 
 
@@ -55,14 +57,16 @@ CREATE TABLE Teamwork(
   --Task_ID and Team_ID together - PK
   --The combination of Task_Id and Team_ID must be unique
   Task_ID NUMBER(3),
-  --Team_ID is unique only for the given task. It is not a constraint
+  --Team_ID is unique only for the given task. It is not a constraint (1-n for task1, 1-n for task2...)
   Team_ID NUMBER(3),
   --Teams can optionally choose Team_Name - def - null
   Team_Name VARCHAR2(50) DEFAULT NULL,
   --Bonuses and Errors are comma-delimited fields, default - null
   Bonuses VARCHAR2(20) DEFAULT NULL,
   "Errors" VARCHAR2(200) DEFAULT NULL,
-  FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID)
+  FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID),
+  --PK - combined
+  PRIMARY KEY(Task_ID, Team_ID) as Team_pk
 );
 
 
@@ -73,7 +77,9 @@ CREATE TABLE TW_Participants(
   --no dublicates in FN for a current Task_ID
   FN NUMBER(12),
   FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID),
-  FOREIGN KEY(FN) REFERENCES Students(FN)
+  FOREIGN KEY(FN) REFERENCES Students(FN),
+  --PK - combined
+  PRIMARY KEY(Task_ID, FN) as TW_Part_pk
 );
 
 
@@ -83,7 +89,9 @@ CREATE TABLE TW_Teams(
   Task_ID NUMBER(3),
   Team_ID NUMBER(3),
   FN NUMBER(12),
-  FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID)
+  FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID),
+  --PK - combined
+  PRIMARY KEY(Task_ID, Team_ID, FN) as TW_members_pk
 );
 
 
@@ -97,7 +105,9 @@ CREATE TABLE TW_Points(
   Category3 VARCHAR2(20) DEFAULT 0 NOT NULL,
   Category4 VARCHAR2(20) DEFAULT 0 NOT NULL,
   Category5 VARCHAR2(20) DEFAULT 0 NOT NULL,
-  FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID)
+  FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID),
+  --PK-combined
+  PRIMARY KEY(Task_ID, Team_ID) as TW_Points_pk
 );
 
 
@@ -106,6 +116,7 @@ CREATE TABLE Bonuses(
    --Autoincrement (Bonus_ID) in O. - Sequence+trigger (nextval)
   Bonus_ID NUMBER(3),
   Bonus_Name VARCHAR2(20),
+  
   PRIMARY KEY(Bonus_ID)
 );
 
@@ -115,5 +126,6 @@ CREATE TABLE "Errors"(
   --Autoincrement (Error_ID) in O. - Sequence+trigger (nextval)
   Error_ID NUMBER(5),
   Error_Name VARCHAR2(20),
+  
   PRIMARY KEY(Error_ID)
 );
