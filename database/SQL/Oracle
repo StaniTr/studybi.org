@@ -16,7 +16,7 @@ CREATE TABLE Students(
 );
 
 
---Tasks
+--task
 CREATE TABLE Tasks(
   --Autoincrement (Task_ID) in O. - Sequence+trigger (nextval)
   Task_ID NUMBER(3),
@@ -51,7 +51,7 @@ CREATE TABLE Selfwork(
   FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID),
   FOREIGN KEY(FN) REFERENCES Students(FN),
   --PK - combined
-  PRIMARY KEY(Task.Task_ID, Students.FN) 
+  PRIMARY KEY(Task_ID, FN) 
 );
 
 
@@ -76,7 +76,7 @@ CREATE TABLE Teamwork(
 
 --TW_Participants - all studetns, who accept to participate in TW
 CREATE TABLE TW_Participants(
-  --list of all students, who accept to participate (for TWs)
+  --list of all Students, who accept to participate (for TWs)
   Task_ID NUMBER(3),
   --no dublicates in FN for a current Task_ID
   FN NUMBER(12),
@@ -96,6 +96,7 @@ CREATE TABLE TW_Teams(
   FN NUMBER(12),
   
   FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID),
+  FOREIGN KEY(FN) REFERENCES Students(FN),
   --PK - combined
   PRIMARY KEY(Task_ID, Team_ID, FN)
 );
@@ -150,7 +151,7 @@ to sudybi;
 --"all" specifies all object privileges
 Grant ALTER, DELETE, INDEX, INSERT, SELECT,UPDATE, REFERENCES
 --privileges on all tables from studybi "db"
-on Students, Tasks, Selfwork, Teamwork, TW_Participants, TW_Members, TW_Points, Bonuses, "Errors"
+on Students, task, Selfwork, Teamwork, TW_Participants, TW_Members, TW_Points, Bonuses, "Errors"
 --grant object privileges to role [studybi]
 to studybi
 --studybo can grant other users
