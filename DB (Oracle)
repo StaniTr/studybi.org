@@ -1,0 +1,119 @@
+--Create tables
+--Students
+CREATE TABLE Students(
+  --datatype - number, precision (p) = 12
+  FN NUMBER(12),
+  FirstName VARCHAR2(20),
+  LastName VARCHAR2(20),
+  --p=6
+  Stream NUMBER(6),
+  "Group" NUMBER(5),
+  Email VARCHAR2(50),
+  --Max VARCHAR2=4000 chars
+  Pass VARCHAR2(200),
+  
+  PRIMARY KEY(FN)
+);
+
+
+--Tasks
+CREATE TABLE Tasks(
+  --Autoincrement (Task_ID) in O. - Sequence+trigger (nextval)
+  Task_ID NUMBER(3),
+  Task_Name VARCHAR2(20),
+  Task_Desc VARCHAR2(200) DEFAULT NULL,
+  Deadline1 DATE,
+  --2nd deadline is with penalty 
+  Deadline2 DATE,
+  -- 0 is selfwork, 1 is TW
+  isTeamwork BOOLEAN DEFAULT 0 NOT NULL,
+  
+  PRIMARY KEY(Task_ID)
+);
+
+
+--Selfwork
+CREATE TABLE Selfwork(
+  --Task_ID and FN together - PK
+  Task_ID NUMBER(3),
+  FN NUMBER(12),
+  --Bonuses and Errors are comma-delimited fields, default - null
+  Bonuses VARCHAR2(20) DEFAULT NULL,
+  "Errors" VARCHAR2(200) DEFAULT NULL,
+  --isFixed, Notes and Mark (only some self work's task have marks: def- null
+  isFixed BOOLEAN DEFAULT 0 NOT NULL,
+  Mark NUMBER(1) DEFAULT NULL,
+  Notes VARCHAR2(200) DEFAULT NULL,
+  --The combination of Task_Id and FN must be unique
+  FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID),
+  FOREIGN KEY(FN) REFERENCES Students(FN)
+);
+
+
+--TW_Teams
+CREATE TABLE Teamwork(
+  --Task_ID and Team_ID together - PK
+  --The combination of Task_Id and Team_ID must be unique
+  Task_ID NUMBER(3),
+  --Team_ID is unique only for the given task. It is not a constraint
+  Team_ID NUMBER(3),
+  --Teams can optionally choose Team_Name - def - null
+  Team_Name VARCHAR2(50) DEFAULT NULL,
+  --Bonuses and Errors are comma-delimited fields, default - null
+  Bonuses VARCHAR2(20) DEFAULT NULL,
+  "Errors" VARCHAR2(200) DEFAULT NULL,
+  FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID)
+);
+
+
+--TW_Participants - all studetns, who accept to participate in TW
+CREATE TABLE TW_Participants(
+  --list of all students, who accept to participate (for TWs)
+  Task_ID NUMBER(3),
+  --no dublicates in FN for a current Task_ID
+  FN NUMBER(12),
+  FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID),
+  FOREIGN KEY(FN) REFERENCES Students(FN)
+);
+
+
+--TW_Members
+CREATE TABLE TW_Teams(
+  --Teams for TWs (random)
+  Task_ID NUMBER(3),
+  Team_ID NUMBER(3),
+  FN NUMBER(12),
+  FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID)
+);
+
+
+--TW_Points
+CREATE TABLE TW_Points(
+  --TW Points are sum of 5 diff categories of assessment
+  Task_ID NUMBER(3),
+  Team_ID NUMBER(3),
+  Category1 VARCHAR2(20) DEFAULT 0 NOT NULL,
+  Category2 VARCHAR2(20) DEFAULT 0 NOT NULL,
+  Category3 VARCHAR2(20) DEFAULT 0 NOT NULL,
+  Category4 VARCHAR2(20) DEFAULT 0 NOT NULL,
+  Category5 VARCHAR2(20) DEFAULT 0 NOT NULL,
+  FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID)
+);
+
+
+--Bonuses - fixed number of bonuses
+CREATE TABLE Bonuses(
+   --Autoincrement (Bonus_ID) in O. - Sequence+trigger (nextval)
+  Bonus_ID NUMBER(3),
+  Bonus_Name VARCHAR2(20),
+  PRIMARY KEY(Bonus_ID)
+);
+
+
+--Errors - not fixed number of errors - autoincrement id
+CREATE TABLE "Errors"(
+  --Autoincrement (Error_ID) in O. - Sequence+trigger (nextval)
+  Error_ID NUMBER(5),
+  Error_Name VARCHAR2(20),
+  PRIMARY KEY(Error_ID)
+);
