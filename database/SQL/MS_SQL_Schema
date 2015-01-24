@@ -3,12 +3,12 @@
 CREATE TABLE Students(
   --datatype - int
   FN int,
-  FirstName VARCHAR(20),
-  LastName VARCHAR(20),
-  Stream int,
-  "Group" int,
-  Email VARCHAR(50),
-  Pass VARCHAR(200),
+  FirstName VARCHAR(20) NOT NULL,
+  LastName VARCHAR(20) NOT NULL,
+  Stream int NOT NULL,
+  "Group" int NOT NULL,
+  Email VARCHAR(50) NOT NULL,
+  Pass VARCHAR(200) NOT NULL,
   
   PRIMARY KEY(FN)
 );
@@ -20,9 +20,9 @@ CREATE TABLE Tasks(
   Task_ID int,
   Task_Name VARCHAR(20),
   Task_Desc VARCHAR(200) DEFAULT NULL,
-  Deadline1 DATETIME,
+  Deadline1 DATETIME NOT NULL,
   --2nd deadline is with penalty 
-  Deadline2 DATETIME,
+  Deadline2 DATETIME NOT NULL,
   -- 'N' is selfwork, 'Y' is TW
   --isTW (isTeamwork)
   isTW CHAR(1) DEFAULT 'N' NOT NULL,
@@ -120,7 +120,7 @@ CREATE TABLE TW_Points(
 CREATE TABLE Bonuses(
    --Autoincrement (Bonus_ID)
   Bonus_ID int,
-  Bonus_Name VARCHAR(20),
+  Bonus_Name VARCHAR(20) NOT NULL,
   
   PRIMARY KEY(Bonus_ID)
 );
@@ -130,7 +130,7 @@ CREATE TABLE Bonuses(
 CREATE TABLE "Errors"(
   --Autoincrement (Error_ID) 
   Error_ID int,
-  Error_Name VARCHAR(20),
+  Error_Name VARCHAR(20) NOT NULL,
   
   PRIMARY KEY(Error_ID)
 );
