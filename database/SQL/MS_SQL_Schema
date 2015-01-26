@@ -42,6 +42,8 @@ CREATE TABLE Selfwork(
   --isFixed, Notes and Mark (only some self work's task have marks: def- null
   isFixed CHAR(1) DEFAULT 'N' NOT NULL,
   Mark int DEFAULT NULL,
+  --when the student upload a solution
+  Self_date DATETIME NOT NULL,
   Notes VARCHAR(200) DEFAULT NULL,
   
   --The combination of Task_Id and FN must be unique
@@ -64,6 +66,8 @@ CREATE TABLE Teamwork(
   --Bonuses and Errors are comma-delimited fields, default - null
   Bonuses VARCHAR(20) DEFAULT NULL,
   "Errors" VARCHAR(200) DEFAULT NULL,
+  --when the student upload a solution
+  TW_date DATETIME NOT NULL,
   
   FOREIGN KEY(Task_ID) REFERENCES Tasks(Task_ID),
   --PK - combined
