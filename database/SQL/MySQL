@@ -150,6 +150,7 @@ CREATE TABLE  `ForumCategories` (
 ENGINE = InnoDB;
 
 
+
 CREATE TABLE  `ForumPosts` (
   `postsId` INT NOT NULL AUTO_INCREMENT,
   `postTitle` VARCHAR(45) NOT NULL,
@@ -170,7 +171,7 @@ CREATE TABLE  `ForumPosts` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Posts_Categories1`
     FOREIGN KEY (`Categories_id`)
-    REFERENCES `bi_forum`.`Categories` (`id`)
+    REFERENCES `Categories` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -198,7 +199,7 @@ CREATE TABLE `Comments` (
   INDEX `fk_Comments_Posts1_idx` (`postId` ASC),
   CONSTRAINT `fk_Comments_Posts1`
     FOREIGN KEY (`postId`)
-    REFERENCES `bi_forum`.`Posts` (`postsId`)
+    REFERENCES `Posts` (`postsId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -215,7 +216,7 @@ CREATE TABLE  `ForumLikes` (
   INDEX `fk_Likes_Users1_idx` (`FN` ASC),
   CONSTRAINT `fk_Likes_Posts1`
     FOREIGN KEY (`Posts_postsId`)
-    REFERENCES `bi_forum`.`Posts` (`postsId`)
+    REFERENCES `Posts` (`postsId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Likes_Users1`
