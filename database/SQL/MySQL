@@ -141,3 +141,86 @@ CREATE TABLE `Errors`(
   
   PRIMARY KEY(Error_ID)
 );
+
+#Forum tables
+CREATE TABLE  `ForumCategories` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `categoryName` VARCHAR(60) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+CREATE TABLE  `ForumPosts` (
+  `postsId` INT NOT NULL AUTO_INCREMENT,
+  `postTitle` VARCHAR(45) NOT NULL,
+  `postContent` TEXT NOT NULL,
+  `FN` INT NOT NULL,
+  `postDate` DATETIME NOT NULL,
+  `postVisits` BIGINT NULL,
+  `postHasComments` TINYINT NOT NULL DEFAULT 1,
+  `postTags` TEXT NULL,
+  `Categories_id` INT NOT NULL,
+  PRIMARY KEY (`postsId`),
+  INDEX `fk_Posts_Users1_idx` (`FN` ASC),
+  INDEX `fk_Posts_Categories1_idx` (`Categories_id` ASC),
+  CONSTRAINT `fk_Posts_Users1`
+    FOREIGN KEY (`FN`)
+    REFERENCES `Students` (`FN`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Posts_Categories1`
+    FOREIGN KEY (`Categories_id`)
+    REFERENCES `bi_forum`.`Categories` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+COMMENT = '		';
+
+
+
+
+CREATE TABLE `ForumTags` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `tagName` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+
+
+CREATE TABLE `Comments` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `FN` VARCHAR(50) NOT NULL,
+  `commentContent` TEXT NOT NULL,
+  `commentDate` DATETIME NOT NULL,
+  `postId` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_Comments_Posts1_idx` (`postId` ASC),
+  CONSTRAINT `fk_Comments_Posts1`
+    FOREIGN KEY (`postId`)
+    REFERENCES `bi_forum`.`Posts` (`postsId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+COMMENT = '	';
+
+
+
+CREATE TABLE  `ForumLikes` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `Posts_postsId` INT NOT NULL,
+  `FN` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_Likes_Posts1_idx` (`Posts_postsId` ASC),
+  INDEX `fk_Likes_Users1_idx` (`FN` ASC),
+  CONSTRAINT `fk_Likes_Posts1`
+    FOREIGN KEY (`Posts_postsId`)
+    REFERENCES `bi_forum`.`Posts` (`postsId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Likes_Users1`
+    FOREIGN KEY (`FN`)
+    REFERENCES `Students` (`FN`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
