@@ -46,6 +46,7 @@ CREATE TABLE Selfwork(
   `Errors` VARCHAR(200) DEFAULT NULL,
   #isFixed, Notes and Mark (only some self works task have marks: def- null
   isFixed CHAR(1) DEFAULT 'N' NOT NULL,
+  UploadDateSelf DATETIME,
   Mark INT(1) DEFAULT NULL,
   Notes VARCHAR(200) DEFAULT NULL,
   
@@ -66,6 +67,7 @@ CREATE TABLE Teamwork(
   Team_ID INT(3),
   #Teams can optionally choose Team_Name - def - null
   Team_Name VARCHAR(50) DEFAULT NULL,
+  UploadDateTW DATETIME,
   #Bonuses and Errors are comma-delimited fields, default - null
   Bonuses VARCHAR(20) DEFAULT NULL,
   `Errors` VARCHAR(200) DEFAULT NULL,
