@@ -19,7 +19,7 @@ CREATE TABLE Students(
 #task
 CREATE TABLE Tasks(
   #Autoincrement (Task_ID) in O. - Sequence+trigger (nextval)
-  Task_ID INT(3),
+  Task_ID INT(3) NOT NULL AUTO_INCREMENT,
   Task_Name VARCHAR(20),
   Task_Desc VARCHAR(200) DEFAULT NULL,
   Deadline1 DATETIME,
@@ -124,7 +124,7 @@ CREATE TABLE TW_Points(
 #Bonuses - fixed INT of bonuses
 CREATE TABLE Bonuses(
    #Autoincrement (Bonus_ID) in O. - Sequence+trigger (nextval)
-  Bonus_ID INT(3),
+  Bonus_ID INT(3) NOT NULL AUTO_INCREMENT,
   Bonus_Name VARCHAR(20),
   
   PRIMARY KEY(Bonus_ID)
@@ -134,7 +134,7 @@ CREATE TABLE Bonuses(
 #Errors - not fixed INT of errors - autoincrement id
 CREATE TABLE `Errors`(
   #Autoincrement (Error_ID) in O. - Sequence+trigger (nextval)
-  Error_ID INT(5),
+  Error_ID INT(5) NOT NULL AUTO_INCREMENT,
   Error_Name VARCHAR(20),
   
   PRIMARY KEY(Error_ID)
